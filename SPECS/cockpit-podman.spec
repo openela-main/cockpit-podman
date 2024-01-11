@@ -1,9 +1,25 @@
+#
+# Copyright (C) 2017-2020 Red Hat, Inc.
+#
+# Cockpit is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# Cockpit is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with Cockpit; If not, see <http://www.gnu.org/licenses/>.
+#
 
 Name:           cockpit-podman
-Version: 63.1
+Version: 75
 Release:        1%{?dist}
 Summary:        Cockpit component for Podman containers
-License:        LGPLv2+
+License:        LGPL-2.1-or-later
 URL:            https://github.com/cockpit-project/cockpit-podman
 
 Source0:        https://github.com/cockpit-project/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
@@ -15,8 +31,41 @@ BuildRequires: gettext
 BuildRequires: libappstream-glib-devel
 %endif
 
-Requires:       cockpit-bridge >= 138
+Requires:       cockpit-bridge
 Requires:       podman >= 2.0.4
+# HACK https://github.com/containers/crun/issues/1091
+%if 0%{?fedora} == 36 || 0%{?fedora} == 37 || 0%{?centos} == 9
+Requires:       criu-libs
+%endif
+
+Provides: bundled(npm(@babel/runtime)) = 7.22.10
+Provides: bundled(npm(@patternfly/patternfly)) = 5.0.2
+Provides: bundled(npm(@patternfly/react-core)) = 5.0.0
+Provides: bundled(npm(@patternfly/react-icons)) = 5.0.0
+Provides: bundled(npm(@patternfly/react-styles)) = 5.0.0
+Provides: bundled(npm(@patternfly/react-table)) = 5.0.0
+Provides: bundled(npm(@patternfly/react-tokens)) = 5.0.0
+Provides: bundled(npm(attr-accept)) = 2.2.2
+Provides: bundled(npm(date-fns)) = 2.30.0
+Provides: bundled(npm(docker-names)) = 1.2.1
+Provides: bundled(npm(file-selector)) = 0.6.0
+Provides: bundled(npm(focus-trap)) = 7.4.3
+Provides: bundled(npm(js-tokens)) = 4.0.0
+Provides: bundled(npm(lodash)) = 4.17.21
+Provides: bundled(npm(loose-envify)) = 1.4.0
+Provides: bundled(npm(object-assign)) = 4.1.1
+Provides: bundled(npm(prop-types)) = 15.8.1
+Provides: bundled(npm(react-dom)) = 18.2.0
+Provides: bundled(npm(react-dropzone)) = 14.2.3
+Provides: bundled(npm(react-is)) = 16.13.1
+Provides: bundled(npm(react)) = 18.2.0
+Provides: bundled(npm(regenerator-runtime)) = 0.14.0
+Provides: bundled(npm(scheduler)) = 0.23.0
+Provides: bundled(npm(tabbable)) = 6.2.0
+Provides: bundled(npm(throttle-debounce)) = 5.0.0
+Provides: bundled(npm(tslib)) = 2.6.2
+Provides: bundled(npm(xterm-addon-canvas)) = 0.4.0
+Provides: bundled(npm(xterm)) = 5.1.0
 
 %description
 The Cockpit user interface for Podman containers.
@@ -28,35 +77,68 @@ The Cockpit user interface for Podman containers.
 # Nothing to build
 
 %install
-%make_install
+%make_install PREFIX=/usr
 appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 
 %files
 %doc README.md
-%license LICENSE dist/index.js.LICENSE.txt.gz
+%license LICENSE dist/index.js.LEGAL.txt dist/index.css.LEGAL.txt
 %{_datadir}/cockpit/*
 %{_datadir}/metainfo/*
 
 %changelog
-* Tue Feb 28 2023 Jindrich Novy <jnovy@redhat.com> - 63.1-1
+* Fri Aug 25 2023 Jindrich Novy <jnovy@redhat.com> - 75-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/75
+- Related: #2176055
+
+* Wed Aug 09 2023 Jindrich Novy <jnovy@redhat.com> - 74-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/74
+- Related: #2176055
+
+* Mon Jul 31 2023 Jindrich Novy <jnovy@redhat.com> - 73-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/73
+- Related: #2176055
+
+* Fri Jul 21 2023 Jindrich Novy <jnovy@redhat.com> - 72-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/72
+- Related: #2176055
+
+* Mon Jul 03 2023 Jindrich Novy <jnovy@redhat.com> - 71-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/71
+- Related: #2176055
+
+* Mon Jun 05 2023 Jindrich Novy <jnovy@redhat.com> - 70-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/70
+- Related: #2176055
+
+* Wed May 24 2023 Jindrich Novy <jnovy@redhat.com> - 69-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/69
+- use unified spec file
+- Related: #2176055
+
+* Fri May 12 2023 Jindrich Novy <jnovy@redhat.com> - 68-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/68
+- Related: #2176055
+
+* Mon Apr 24 2023 Jindrich Novy <jnovy@redhat.com> - 67-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/67
+- Related: #2176055
+
+* Wed Apr 12 2023 Jindrich Novy <jnovy@redhat.com> - 66-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/66
+- Related: #2176055
+
+* Fri Mar 24 2023 Jindrich Novy <jnovy@redhat.com> - 65-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/65
+- Related: #2176055
+
+* Fri Mar 17 2023 Jindrich Novy <jnovy@redhat.com> - 64-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/64
+- Related: #2176055
+
+* Wed Mar 08 2023 Jindrich Novy <jnovy@redhat.com> - 63.1-2
 - update to https://github.com/cockpit-project/cockpit-podman/releases/tag/63.1
-- Related: #2123641
-
-* Mon Feb 27 2023 Jindrich Novy <jnovy@redhat.com> - 63-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/63
-- Related: #2123641
-
-* Wed Feb 08 2023 Jindrich Novy <jnovy@redhat.com> - 62-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/62
-- Related: #2123641
-
-* Thu Jan 26 2023 Jindrich Novy <jnovy@redhat.com> - 61-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/61
-- Related: #2123641
-
-* Fri Jan 13 2023 Jindrich Novy <jnovy@redhat.com> - 60-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/60
-- Related: #2123641
+- Related: #2176055
 
 * Mon Jan 02 2023 Jindrich Novy <jnovy@redhat.com> - 59-1
 - update to https://github.com/cockpit-project/cockpit-podman/releases/tag/59

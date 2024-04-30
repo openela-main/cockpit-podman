@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-podman
-Version: 76
+Version: 84.1
 Release:        1%{?dist}
 Summary:        Cockpit component for Podman containers
 License:        LGPL-2.1-or-later
@@ -34,22 +34,22 @@ BuildRequires: libappstream-glib-devel
 Requires:       cockpit-bridge
 Requires:       podman >= 2.0.4
 # HACK https://github.com/containers/crun/issues/1091
-%if 0%{?fedora} == 36 || 0%{?fedora} == 37 || 0%{?centos} == 9
+%if 0%{?centos} == 9
 Requires:       criu-libs
 %endif
 
-Provides: bundled(npm(@babel/runtime)) = 7.22.10
-Provides: bundled(npm(@patternfly/patternfly)) = 5.0.2
-Provides: bundled(npm(@patternfly/react-core)) = 5.0.0
-Provides: bundled(npm(@patternfly/react-icons)) = 5.0.0
-Provides: bundled(npm(@patternfly/react-styles)) = 5.0.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.0.0
-Provides: bundled(npm(@patternfly/react-tokens)) = 5.0.0
+Provides: bundled(npm(@patternfly/patternfly)) = 5.2.0
+Provides: bundled(npm(@patternfly/react-core)) = 5.2.0
+Provides: bundled(npm(@patternfly/react-icons)) = 5.2.0
+Provides: bundled(npm(@patternfly/react-styles)) = 5.2.0
+Provides: bundled(npm(@patternfly/react-table)) = 5.2.0
+Provides: bundled(npm(@patternfly/react-tokens)) = 5.2.0
 Provides: bundled(npm(attr-accept)) = 2.2.2
-Provides: bundled(npm(date-fns)) = 2.30.0
+Provides: bundled(npm(date-fns)) = 3.3.1
 Provides: bundled(npm(docker-names)) = 1.2.1
 Provides: bundled(npm(file-selector)) = 0.6.0
-Provides: bundled(npm(focus-trap)) = 7.4.3
+Provides: bundled(npm(focus-trap)) = 7.5.2
+Provides: bundled(npm(ipaddr.js)) = 2.1.0
 Provides: bundled(npm(js-tokens)) = 4.0.0
 Provides: bundled(npm(lodash)) = 4.17.21
 Provides: bundled(npm(loose-envify)) = 1.4.0
@@ -59,7 +59,6 @@ Provides: bundled(npm(react-dom)) = 18.2.0
 Provides: bundled(npm(react-dropzone)) = 14.2.3
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.2.0
-Provides: bundled(npm(regenerator-runtime)) = 0.14.0
 Provides: bundled(npm(scheduler)) = 0.23.0
 Provides: bundled(npm(tabbable)) = 6.2.0
 Provides: bundled(npm(throttle-debounce)) = 5.0.0
@@ -87,52 +86,71 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/metainfo/*
 
 %changelog
-* Thu Sep 07 2023 Jindrich Novy <jnovy@redhat.com> - 76-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/76
-- Resolves: #2189507
+* Tue Feb 20 2024 Jindrich Novy <jnovy@redhat.com> - 84.1-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/84.1
+- Related: RHEL-2112
 
-* Thu Aug 24 2023 Jindrich Novy <jnovy@redhat.com> - 75-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/75
-- Related: #2176063
+* Fri Feb 16 2024 Jindrich Novy <jnovy@redhat.com> - 84-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/84
+- Related: RHEL-2112
 
-* Wed Aug 09 2023 Jindrich Novy <jnovy@redhat.com> - 74-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/74
-- Related: #2176063
+* Fri Jan 19 2024 Jindrich Novy <jnovy@redhat.com> - 83-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/83
+- Related: RHEL-2112
 
-* Tue Aug 01 2023 Jindrich Novy <jnovy@redhat.com> - 73-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/73
-- Related: #2176063
+* Wed Nov 29 2023 Packit <hello@packit.dev> - 82-1
+- Delete intermediate images
 
-* Wed Jul 12 2023 Jindrich Novy <jnovy@redhat.com> - 72-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/72
-- Related: #2176063
+* Wed Nov 15 2023 Packit <hello@packit.dev> - 81-1
+- Performance and stability improvements
 
-* Mon Jun 19 2023 Jindrich Novy <jnovy@redhat.com> - 71-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/71
-- Related: #2176063
+* Wed Nov 01 2023 Packit <hello@packit.dev> - 80-1
+- Performance and stability improvements
 
-* Mon Jun 05 2023 Jindrich Novy <jnovy@redhat.com> - 70-2
-- add missing prefix
-- Related: #2176063
+* Wed Oct 18 2023 Packit <hello@packit.dev> - 79-1
+- Validate fields in "Create container" dialog
 
-* Fri Jun 02 2023 Jindrich Novy <jnovy@redhat.com> - 70-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/70
-- Related: #2176063
+* Thu Oct 05 2023 Packit <hello@packit.dev> - 78-1
+- Label Toolbox and Distrobox containers
 
-* Tue May 23 2023 Jindrich Novy <jnovy@redhat.com> - 69-1
-- update to 69 and update Provides from Fedora
-- Related: #2176063
+* Wed Sep 20 2023 Packit <hello@packit.dev> - 77-1
+- Performance and stability improvements
 
-* Thu May 11 2023 Jindrich Novy <jnovy@redhat.com> - 68-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/68
-- Related: #2176063
+* Wed Sep 06 2023 Packit <hello@packit.dev> - 76-1
+- Performance and stability improvements
 
-* Mon Apr 24 2023 Jindrich Novy <jnovy@redhat.com> - 67-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/67
-- Related: #2176063
+* Wed Aug 23 2023 Packit <hello@packit.dev> - 75-1
+- Performance and stability improvements
 
-* Mon Apr 17 2023 Martin Pitt <mpitt@redhat.com> - 66-2
- - Sync with Fedora rawhide to fix tests
+* Wed Aug 09 2023 Packit <hello@packit.dev> - 74-1
+- PatternFly 5
+- Bug fixes and translation updates
+
+* Wed Jul 26 2023 Packit <hello@packit.dev> - 73-1
+- show time of container's latest checkpoint
+
+* Wed Jul 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 72-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
+
+* Wed Jul 12 2023 Packit <hello@packit.dev> - 72-1
+- Bug fixes and translation updates
+
+* Sat Jun 17 2023 Packit <hello@packit.dev> - 71-1
+- Add manifest condition for the Python bridge
+
+* Thu Jun 01 2023 Packit <hello@packit.dev> - 70-1
+- Add ability to prune unused containers
+
+* Tue May 16 2023 Packit <hello@packit.dev> - 69-1
+- PatternFly 5 fixes
+- Translation updates
+
+* Wed May 03 2023 Packit <hello@packit.dev> - 68-1
+- Update to PatternFly 5 Alpha
+
+* Wed Apr 19 2023 Packit <hello@packit.dev> - 67-1
+- Fix building on non-x86_64 machines with esbuild-wasm
+- Translation updates
 
 * Tue Apr 11 2023 Packit <hello@packit.dev> - 66-1
  - Container list can be sorted

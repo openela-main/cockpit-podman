@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-podman
-Version: 75
+Version: 84.1
 Release:        1%{?dist}
 Summary:        Cockpit component for Podman containers
 License:        LGPL-2.1-or-later
@@ -34,22 +34,22 @@ BuildRequires: libappstream-glib-devel
 Requires:       cockpit-bridge
 Requires:       podman >= 2.0.4
 # HACK https://github.com/containers/crun/issues/1091
-%if 0%{?fedora} == 36 || 0%{?fedora} == 37 || 0%{?centos} == 9
+%if 0%{?centos} == 9
 Requires:       criu-libs
 %endif
 
-Provides: bundled(npm(@babel/runtime)) = 7.22.10
-Provides: bundled(npm(@patternfly/patternfly)) = 5.0.2
-Provides: bundled(npm(@patternfly/react-core)) = 5.0.0
-Provides: bundled(npm(@patternfly/react-icons)) = 5.0.0
-Provides: bundled(npm(@patternfly/react-styles)) = 5.0.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.0.0
-Provides: bundled(npm(@patternfly/react-tokens)) = 5.0.0
+Provides: bundled(npm(@patternfly/patternfly)) = 5.2.0
+Provides: bundled(npm(@patternfly/react-core)) = 5.2.0
+Provides: bundled(npm(@patternfly/react-icons)) = 5.2.0
+Provides: bundled(npm(@patternfly/react-styles)) = 5.2.0
+Provides: bundled(npm(@patternfly/react-table)) = 5.2.0
+Provides: bundled(npm(@patternfly/react-tokens)) = 5.2.0
 Provides: bundled(npm(attr-accept)) = 2.2.2
-Provides: bundled(npm(date-fns)) = 2.30.0
+Provides: bundled(npm(date-fns)) = 3.3.1
 Provides: bundled(npm(docker-names)) = 1.2.1
 Provides: bundled(npm(file-selector)) = 0.6.0
-Provides: bundled(npm(focus-trap)) = 7.4.3
+Provides: bundled(npm(focus-trap)) = 7.5.2
+Provides: bundled(npm(ipaddr.js)) = 2.1.0
 Provides: bundled(npm(js-tokens)) = 4.0.0
 Provides: bundled(npm(lodash)) = 4.17.21
 Provides: bundled(npm(loose-envify)) = 1.4.0
@@ -59,7 +59,6 @@ Provides: bundled(npm(react-dom)) = 18.2.0
 Provides: bundled(npm(react-dropzone)) = 14.2.3
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.2.0
-Provides: bundled(npm(regenerator-runtime)) = 0.14.0
 Provides: bundled(npm(scheduler)) = 0.23.0
 Provides: bundled(npm(tabbable)) = 6.2.0
 Provides: bundled(npm(throttle-debounce)) = 5.0.0
@@ -87,6 +86,42 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/metainfo/*
 
 %changelog
+* Tue Feb 20 2024 Jindrich Novy <jnovy@redhat.com> - 84.1-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/84.1
+- Related: Jira:RHEL-25557
+
+* Mon Feb 19 2024 Jindrich Novy <jnovy@redhat.com> - 84-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/84
+- Related: Jira:RHEL-2110
+
+* Fri Jan 19 2024 Jindrich Novy <jnovy@redhat.com> - 83-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/83
+- Related: Jira:RHEL-2110
+
+* Tue Jan 02 2024 Jindrich Novy <jnovy@redhat.com> - 82-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/82
+- Related: Jira:RHEL-2110
+
+* Wed Nov 15 2023 Jindrich Novy <jnovy@redhat.com> - 81-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/81
+- Related: Jira:RHEL-2110
+
+* Fri Nov 03 2023 Jindrich Novy <jnovy@redhat.com> - 80-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/80
+- Related: Jira:RHEL-2110
+
+* Mon Oct 30 2023 Jindrich Novy <jnovy@redhat.com> - 79-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/79
+- Related: Jira:RHEL-2110
+
+* Thu Oct 12 2023 Jindrich Novy <jnovy@redhat.com> - 78-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/78
+- Related: Jira:RHEL-2110
+
+* Fri Sep 22 2023 Jindrich Novy <jnovy@redhat.com> - 77-1
+- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/77
+- Related: Jira:RHEL-2110
+
 * Fri Aug 25 2023 Jindrich Novy <jnovy@redhat.com> - 75-1
 - update to https://github.com/cockpit-project/cockpit-podman/releases/tag/75
 - Related: #2176055

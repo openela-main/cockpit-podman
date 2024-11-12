@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-podman
-Version: 84.1
+Version:        93.1
 Release:        1%{?dist}
 Summary:        Cockpit component for Podman containers
 License:        LGPL-2.1-or-later
@@ -24,7 +24,12 @@ URL:            https://github.com/cockpit-project/cockpit-podman
 
 Source0:        https://github.com/cockpit-project/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
 BuildArch:      noarch
+%if 0%{?suse_version}
+# Suse's package has a different name
+BuildRequires:  appstream-glib
+%else
 BuildRequires:  libappstream-glib
+%endif
 BuildRequires:  make
 BuildRequires: gettext
 %if 0%{?rhel} && 0%{?rhel} <= 8
@@ -36,35 +41,36 @@ Requires:       podman >= 2.0.4
 # HACK https://github.com/containers/crun/issues/1091
 %if 0%{?centos} == 9
 Requires:       criu-libs
+%elif 0%{?suse_version}
+Requires:       libcriu2
 %endif
 
-Provides: bundled(npm(@patternfly/patternfly)) = 5.2.0
-Provides: bundled(npm(@patternfly/react-core)) = 5.2.0
-Provides: bundled(npm(@patternfly/react-icons)) = 5.2.0
-Provides: bundled(npm(@patternfly/react-styles)) = 5.2.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.2.0
-Provides: bundled(npm(@patternfly/react-tokens)) = 5.2.0
+Provides: bundled(npm(@patternfly/patternfly)) = 5.3.1
+Provides: bundled(npm(@patternfly/react-core)) = 5.3.4
+Provides: bundled(npm(@patternfly/react-icons)) = 5.3.2
+Provides: bundled(npm(@patternfly/react-styles)) = 5.3.1
+Provides: bundled(npm(@patternfly/react-table)) = 5.3.4
+Provides: bundled(npm(@patternfly/react-tokens)) = 5.3.1
+Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
+Provides: bundled(npm(@xterm/xterm)) = 5.5.0
 Provides: bundled(npm(attr-accept)) = 2.2.2
-Provides: bundled(npm(date-fns)) = 3.3.1
 Provides: bundled(npm(docker-names)) = 1.2.1
 Provides: bundled(npm(file-selector)) = 0.6.0
 Provides: bundled(npm(focus-trap)) = 7.5.2
-Provides: bundled(npm(ipaddr.js)) = 2.1.0
+Provides: bundled(npm(ipaddr.js)) = 2.2.0
 Provides: bundled(npm(js-tokens)) = 4.0.0
 Provides: bundled(npm(lodash)) = 4.17.21
 Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
-Provides: bundled(npm(react-dom)) = 18.2.0
+Provides: bundled(npm(react-dom)) = 18.3.1
 Provides: bundled(npm(react-dropzone)) = 14.2.3
 Provides: bundled(npm(react-is)) = 16.13.1
-Provides: bundled(npm(react)) = 18.2.0
-Provides: bundled(npm(scheduler)) = 0.23.0
+Provides: bundled(npm(react)) = 18.3.1
+Provides: bundled(npm(scheduler)) = 0.23.2
 Provides: bundled(npm(tabbable)) = 6.2.0
-Provides: bundled(npm(throttle-debounce)) = 5.0.0
-Provides: bundled(npm(tslib)) = 2.6.2
-Provides: bundled(npm(xterm-addon-canvas)) = 0.4.0
-Provides: bundled(npm(xterm)) = 5.1.0
+Provides: bundled(npm(throttle-debounce)) = 5.0.2
+Provides: bundled(npm(tslib)) = 2.6.3
 
 %description
 The Cockpit user interface for Podman containers.
@@ -86,17 +92,52 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/metainfo/*
 
 %changelog
-* Tue Feb 20 2024 Jindrich Novy <jnovy@redhat.com> - 84.1-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/84.1
-- Related: RHEL-2112
+* Thu Aug 22 2024 Packit <hello@packit.dev> - 93-1
+- Bug fixes and translation updates
 
-* Fri Feb 16 2024 Jindrich Novy <jnovy@redhat.com> - 84-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/84
-- Related: RHEL-2112
+* Thu Aug 08 2024 Packit <hello@packit.dev> - 92-1
+- Bug fixes
 
-* Fri Jan 19 2024 Jindrich Novy <jnovy@redhat.com> - 83-1
-- update to https://github.com/cockpit-project/cockpit-podman/releases/tag/83
-- Related: RHEL-2112
+* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 91-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Wed Jul 10 2024 Packit <hello@packit.dev> - 91-1
+- Bug fixes and performance improvements
+
+* Wed Jun 26 2024 Packit <hello@packit.dev> - 90-1
+- Implement pull option for existing images
+
+* Wed Jun 05 2024 Packit <hello@packit.dev> - 89-1
+- Use binary http channel for podman socket for non-UTF-8 robustness
+- Stop using obsolete cockpit.utf8_{de,en}coder() API
+- Fix tests for CentOS/RHEL 10
+
+* Wed May 29 2024 Packit <hello@packit.dev> - 88-1
+- Translation updates
+
+* Thu Apr 25 2024 Packit <hello@packit.dev> - 87-1
+- Bug fixes and performance improvements
+
+* Wed Mar 27 2024 Packit <hello@packit.dev> - 86-1
+- Bug fixes and performance improvements
+
+* Wed Mar 13 2024 Packit <hello@packit.dev> - 85-1
+- "bug fixes & performance improvements"
+
+* Tue Feb 20 2024 Packit <hello@packit.dev> - 84.1-1
+- Translation updates (RHEL-25556/RHEL-25557)
+
+* Wed Feb 14 2024 Packit <hello@packit.dev> - 84-1
+- Bug fixes and stability improvements
+
+* Wed Jan 24 2024 Fedora Release Engineering <releng@fedoraproject.org> - 83-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+
+* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 83-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+
+* Thu Jan 18 2024 Packit <hello@packit.dev> - 83-1
+- bug fixes and library updates
 
 * Wed Nov 29 2023 Packit <hello@packit.dev> - 82-1
 - Delete intermediate images

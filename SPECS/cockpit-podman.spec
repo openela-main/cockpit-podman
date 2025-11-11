@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-podman
-Version:        101
+Version:        111
 Release:        1%{?dist}
 Summary:        Cockpit component for Podman containers
 License:        LGPL-2.1-or-later
@@ -45,18 +45,18 @@ Requires:       criu-libs
 Requires:       libcriu2
 %endif
 
-Provides: bundled(npm(@patternfly/patternfly)) = 5.4.2
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.12
-Provides: bundled(npm(@patternfly/react-icons)) = 5.4.2
-Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.14
-Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
+Provides: bundled(npm(@patternfly/patternfly)) = 6.2.3
+Provides: bundled(npm(@patternfly/react-core)) = 6.2.2
+Provides: bundled(npm(@patternfly/react-icons)) = 6.2.2
+Provides: bundled(npm(@patternfly/react-styles)) = 6.2.2
+Provides: bundled(npm(@patternfly/react-table)) = 6.2.2
+Provides: bundled(npm(@patternfly/react-tokens)) = 6.2.2
 Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
 Provides: bundled(npm(@xterm/xterm)) = 5.5.0
 Provides: bundled(npm(attr-accept)) = 2.2.5
 Provides: bundled(npm(docker-names)) = 1.2.1
 Provides: bundled(npm(file-selector)) = 2.1.2
-Provides: bundled(npm(focus-trap)) = 7.6.2
+Provides: bundled(npm(focus-trap)) = 7.6.4
 Provides: bundled(npm(ipaddr.js)) = 2.2.0
 Provides: bundled(npm(js-tokens)) = 4.0.0
 Provides: bundled(npm(lodash)) = 4.17.21
@@ -64,7 +64,7 @@ Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.3.5
+Provides: bundled(npm(react-dropzone)) = 14.3.8
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(scheduler)) = 0.23.2
@@ -92,6 +92,43 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/metainfo/*
 
 %changelog
+* Wed Aug 06 2025 Packit <hello@packit.dev> - 111-1
+Bug fixes and translation updates
+
+* Wed Jul 23 2025 Fedora Release Engineering <releng@fedoraproject.org> - 110-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
+
+* Wed Jul 23 2025 Packit <hello@packit.dev> - 110-1
+- Bug fixes and translation updates
+
+* Wed Jul 09 2025 Packit <hello@packit.dev> - 109-1
+- Bug fixes and translation updates
+
+* Wed Jun 25 2025 Packit <hello@packit.dev> - 108-1
+- Bug fixes and translation updates
+
+* Wed Jun 04 2025 Packit <hello@packit.dev> - 107-1
+- Bug fixes and translation updates
+
+* Wed May 21 2025 Packit <hello@packit.dev> - 106-1
+- Bug fixes and translation updates
+
+* Wed May 07 2025 Packit <hello@packit.dev> - 105-1
+- Translation updates
+- Bug fixes
+
+* Wed Apr 23 2025 Packit <hello@packit.dev> - 104-1
+- Upgraded to Patternfly 6
+- Link service containers to service pages
+- Connect to other accounts
+
+* Wed Mar 12 2025 Packit <hello@packit.dev> - 103-1
+- Translation updates
+- Bug fixes
+
+* Thu Feb 27 2025 Packit <hello@packit.dev> - 102-1
+- Bug fixes
+
 * Thu Feb 13 2025 Packit <hello@packit.dev> - 101-1
 - automatically start podman.socket
 

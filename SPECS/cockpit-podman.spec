@@ -1,28 +1,22 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 #
 # Copyright (C) 2017-2020 Red Hat, Inc.
-#
-# Cockpit is free software; you can redistribute it and/or modify it
-# under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation; either version 2.1 of the License, or
-# (at your option) any later version.
-#
-# Cockpit is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-# Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with Cockpit; If not, see <http://www.gnu.org/licenses/>.
-#
 
 Name:           cockpit-podman
-Version:        111
+Version:        121
 Release:        1%{?dist}
 Summary:        Cockpit component for Podman containers
 License:        LGPL-2.1-or-later
 URL:            https://github.com/cockpit-project/cockpit-podman
 
-Source0:        https://github.com/cockpit-project/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+# distributions which ship nodejs-esbuild can rebuild the bundle during package build
+%if 0%{?fedora} >= 42
+%define rebuild_bundle 1
+%endif
+
+Source0: https://github.com/cockpit-project/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source1: https://github.com/cockpit-project/%{name}/releases/download/%{version}/%{name}-node-%{version}.tar.xz
+
 BuildArch:      noarch
 %if 0%{?suse_version}
 # Suse's package has a different name
@@ -35,6 +29,10 @@ BuildRequires: gettext
 %if 0%{?rhel} && 0%{?rhel} <= 8
 BuildRequires: libappstream-glib-devel
 %endif
+%if %{defined rebuild_bundle}
+BuildRequires: /usr/bin/node
+BuildRequires: nodejs-esbuild
+%endif
 
 Requires:       cockpit-bridge
 Requires:       podman >= 2.0.4
@@ -45,30 +43,23 @@ Requires:       criu-libs
 Requires:       libcriu2
 %endif
 
-Provides: bundled(npm(@patternfly/patternfly)) = 6.2.3
-Provides: bundled(npm(@patternfly/react-core)) = 6.2.2
-Provides: bundled(npm(@patternfly/react-icons)) = 6.2.2
-Provides: bundled(npm(@patternfly/react-styles)) = 6.2.2
-Provides: bundled(npm(@patternfly/react-table)) = 6.2.2
-Provides: bundled(npm(@patternfly/react-tokens)) = 6.2.2
-Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
-Provides: bundled(npm(@xterm/xterm)) = 5.5.0
-Provides: bundled(npm(attr-accept)) = 2.2.5
+Provides: bundled(npm(@patternfly/patternfly)) = 6.4.0
+Provides: bundled(npm(@patternfly/react-core)) = 6.4.1
+Provides: bundled(npm(@patternfly/react-icons)) = 6.4.0
+Provides: bundled(npm(@patternfly/react-styles)) = 6.4.0
+Provides: bundled(npm(@patternfly/react-table)) = 6.4.1
+Provides: bundled(npm(@patternfly/react-tokens)) = 6.4.0
+Provides: bundled(npm(@xterm/addon-webgl)) = 0.19.0
+Provides: bundled(npm(@xterm/xterm)) = 6.0.0
 Provides: bundled(npm(docker-names)) = 1.2.1
-Provides: bundled(npm(file-selector)) = 2.1.2
 Provides: bundled(npm(focus-trap)) = 7.6.4
-Provides: bundled(npm(ipaddr.js)) = 2.2.0
-Provides: bundled(npm(js-tokens)) = 4.0.0
-Provides: bundled(npm(lodash)) = 4.17.21
-Provides: bundled(npm(loose-envify)) = 1.4.0
-Provides: bundled(npm(object-assign)) = 4.1.1
+Provides: bundled(npm(ipaddr.js)) = 2.3.0
+Provides: bundled(npm(lodash)) = 4.17.23
 Provides: bundled(npm(prop-types)) = 15.8.1
-Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.3.8
-Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
+Provides: bundled(npm(react-dom)) = 18.3.1
 Provides: bundled(npm(scheduler)) = 0.23.2
-Provides: bundled(npm(tabbable)) = 6.2.0
+Provides: bundled(npm(tabbable)) = 6.4.0
 Provides: bundled(npm(throttle-debounce)) = 5.0.2
 Provides: bundled(npm(tslib)) = 2.8.1
 
@@ -77,9 +68,19 @@ The Cockpit user interface for Podman containers.
 
 %prep
 %setup -q -n %{name}
+%if %{defined rebuild_bundle}
+%setup -q -D -T -a 1 -n %{name}
+%endif
 
 %build
-# Nothing to build
+%if %{defined rebuild_bundle}
+rm -rf dist
+# HACK: node module packaging is broken in Fedora ≤ 43; should be in
+# common location, not major version specific one
+NODE_ENV=production NODE_PATH=/usr/lib/node_modules:$(echo /usr/lib/node_modules_*) ./build.js
+%else
+# Use pre-built bundle on distributions without nodejs-esbuild
+%endif
 
 %install
 %make_install PREFIX=/usr
@@ -92,6 +93,49 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/metainfo/*
 
 %changelog
+* Wed Feb 11 2026 Packit <hello@packit.dev> - 121-1
+- Convert license headers to SPDX format
+
+
+* Wed Jan 28 2026 Packit <hello@packit.dev> - 120-1
+- Packaging fixes and translation updates
+
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 119.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 119.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Wed Dec 10 2025 Packit <hello@packit.dev> - 119.1-1
+- Release automation bugfix
+
+
+* Wed Nov 26 2025 Packit <hello@packit.dev> - 118-1
+- Bug fixes and translation updates
+
+
+* Wed Nov 12 2025 Packit <hello@packit.dev> - 117-1
+- Performance and stability improvements
+
+
+* Wed Oct 29 2025 Packit <hello@packit.dev> - 116-1
+- Support stopping/starting/restart quadlets
+
+
+* Wed Oct 15 2025 Packit <hello@packit.dev> - 115-1
+- List stopped quadlets
+- Translations and dependency updates
+
+* Thu Oct 02 2025 Packit <hello@packit.dev> - 114-1
+- Bug fixes and translation updates
+
+* Wed Sep 03 2025 Packit <hello@packit.dev> - 113-1
+- Sortable Images table
+
+* Wed Aug 20 2025 Packit <hello@packit.dev> - 112-1
+- Translation and dependency updates
+
 * Wed Aug 06 2025 Packit <hello@packit.dev> - 111-1
 Bug fixes and translation updates
 
